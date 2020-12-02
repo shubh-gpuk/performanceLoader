@@ -3,6 +3,7 @@ const net = require('net');
 const http = require('http');
 const os = require('os');
 const farmhash = require('farmhash');
+const express = require('express');
 
 const numCPUs = os.cpus().length;
 const port = 9000;
@@ -40,11 +41,23 @@ if(cluster.isMaster){
     console.log(`Master listening on ${port}`);
 }
 else{
-    http.createServer((req, res) => {
-        res.writeHead(200);
-        res.end('Hello Shubham!');
-        console.log(`Worker ${process.pid} used`);
-    }).listen(5000);
+    const app = express();
 
-    console.log(`Worker ${process.pid} is running`)
+    //Don't expose interval express server to the outside world
+    const server = app.listen(0, 'localhost');
+
+    //Listen to message event ONLY
+    process.on('message', (message, connection) => {
+        if(message !== 'sticky-session:connection'){
+            return;
+        }
+
+        //Emulate a connection event on the server, by sending the same connection back
+        server.emit('connection', connection);
+
+        connection.resume();
+
+    });
+
+    console.log(`Worker ${process.pid} is running`);
 }
