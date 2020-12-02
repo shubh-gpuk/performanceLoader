@@ -5,6 +5,7 @@ const os = require('os');
 const farmhash = require('farmhash');
 
 const numCPUs = os.cpus().length;
+const port = 9000;
 
 if(cluster.isMaster){
 
@@ -30,6 +31,13 @@ if(cluster.isMaster){
     function worker_index(source_ip, len){
         return farmhash.fingerprint32(source_ip) %  len;
     }
+
+    const server = net.createServer({pauseOnConnect:true}, (connection) => {
+        let worker = workers[worker_index(connection.remoteAddress, numCPUs)];
+        worker.send('sticky-session:connection', connection);
+    })
+    server.listen(port);
+    console.log(`Master listening on ${port}`);
 }
 else{
     http.createServer((req, res) => {
