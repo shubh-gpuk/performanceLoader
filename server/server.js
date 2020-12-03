@@ -4,6 +4,9 @@ const http = require('http');
 const os = require('os');
 const farmhash = require('farmhash');
 const express = require('express');
+const socket_io = require('socket.io');
+const sio_redis = require('socket.io-redis');
+const socketMain = require('./socketMain');
 
 const numCPUs = os.cpus().length;
 const port = 9000;
@@ -41,10 +44,18 @@ if(cluster.isMaster){
     console.log(`Master listening on ${port}`);
 }
 else{
+    console.log(`Worker ${process.pid} is running`);
     const app = express();
 
     //Don't expose interval express server to the outside world
     const server = app.listen(0, 'localhost');
+
+    const io = socket_io(server);
+    io.adapter(sio_redis({host : 'localhost', port : 6379}));
+
+    io.on('connection', (socket) => {
+        socketMain(io, socket);
+    });
 
     //Listen to message event ONLY
     process.on('message', (message, connection) => {
@@ -59,5 +70,4 @@ else{
 
     });
 
-    console.log(`Worker ${process.pid} is running`);
 }

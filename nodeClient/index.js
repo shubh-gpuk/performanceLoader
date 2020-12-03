@@ -13,8 +13,13 @@
         // Clock speed
 
 const os = require('os');
-const { resolve } = require('path');
+const io = require('socket.io-client');
 
+let socket = io('http://127.0.0.1:9000');
+
+socket.on('connect', () => {
+    console.log('Connected to server.');
+})
 
 function performanceData(){
     return new Promise(async (resolve, reject) => {
