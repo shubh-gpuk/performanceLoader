@@ -19,7 +19,32 @@ let socket = io('http://127.0.0.1:9000');
 
 socket.on('connect', () => {
     console.log('Connected to server.');
-})
+
+    //socket.emit('clientType', 'nodeClient#123456');
+
+    //send data to the server every second
+    const sendDataPerSecond = setInterval(()=> {
+        performanceData().then((data) => {
+            //console.log(data);
+            socket.emit('performanceData', data);
+        });
+    }, 1000);
+
+    socket.on('disconnect', () => {
+        clearInterval(sendDataPerSecond);
+    });
+
+});
+
+
+// const netInterfaces = os.networkInterfaces();
+// //console.log(netInterfaces);
+// let macAddr;
+// for(let type in netInterfaces){
+//     if(!netInterfaces[type][0].internal)
+//         macAddr = netInterfaces[type][0].mac
+//         break;
+// }
 
 function performanceData(){
     return new Promise(async (resolve, reject) => {
@@ -90,8 +115,3 @@ function getcpuLoad(){
         }, 100);
     });
 }
-
-
-performanceData().then((data) => {
-    console.log(data);
-});
