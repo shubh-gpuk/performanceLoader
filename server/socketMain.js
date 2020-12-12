@@ -6,17 +6,17 @@ function socketMain(io, socket){
     let macAddr = "";
     console.log("Client " + socket.id + ' connected!');
 
-    // socket.on('clientType', (key) => {
-    //     if(key === 'nodeClient#123456'){
-    //         socket.join('nodeClient');
-    //     }
-    //     else if(key === 'uiClient#123456'){
-    //         socket.join('uiClient');
-    //     }
-    //     else{
-    //         socket.disconnect();
-    //     }
-    // });
+    socket.on('clientType', (key) => {
+        if(key === 'nodeClient#123456'){
+            socket.join('nodeClient');
+        }
+        else if(key === 'uiClient#123456'){
+            socket.join('uiClient');
+        }
+        else{
+            socket.disconnect();
+        }
+    });
     
     socket.on('initPerformanceData', async (data) => {
         //set mac address from the received data
