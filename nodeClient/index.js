@@ -37,14 +37,14 @@ socket.on('connect', () => {
 });
 
 
-// const netInterfaces = os.networkInterfaces();
-// //console.log(netInterfaces);
-// let macAddr;
-// for(let type in netInterfaces){
-//     if(!netInterfaces[type][0].internal)
-//         macAddr = netInterfaces[type][0].mac
-//         break;
-// }
+const netInterfaces = os.networkInterfaces();
+//console.log(netInterfaces);
+let macAddr;
+for(let type in netInterfaces){
+    if(!netInterfaces[type][0].internal)
+        macAddr = netInterfaces[type][0].mac
+        break;
+}
 
 function performanceData(){
     return new Promise(async (resolve, reject) => {
