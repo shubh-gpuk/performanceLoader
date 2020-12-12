@@ -50,7 +50,9 @@ else{
     //Don't expose interval express server to the outside world
     const server = app.listen(0, 'localhost');
 
-    const io = socket_io(server);
+    const io = socket_io(server, {
+        cors : 'http://127.0.0.1:3000'
+    });
     io.adapter(sio_redis({host : 'localhost', port : 6379}));
 
     io.on('connection', (socket) => {
