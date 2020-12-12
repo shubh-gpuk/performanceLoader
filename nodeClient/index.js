@@ -22,6 +22,11 @@ socket.on('connect', () => {
 
     //socket.emit('clientType', 'nodeClient#123456');
 
+    performanceData().then((data) => {
+        data.macAddr = macAddr;
+        socket.emit('initPerformanceData', data);
+    });
+
     //send data to the server every second
     const sendDataPerSecond = setInterval(()=> {
         performanceData().then((data) => {
