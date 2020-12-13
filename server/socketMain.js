@@ -12,6 +12,7 @@ function socketMain(io, socket){
         }
         else if(key === 'uiClient#123456'){
             socket.join('uiClient');
+            console.log("A UI client joined");
         }
         else{
             socket.disconnect();
@@ -30,6 +31,7 @@ function socketMain(io, socket){
     //performance data from client
     socket.on('performanceData', (data) => {
         console.log(data);
+        socket.to('uiClient').emit('performanceData', data);
     })
 }
 
