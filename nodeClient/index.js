@@ -31,6 +31,7 @@ socket.on('connect', () => {
     const sendDataPerSecond = setInterval(()=> {
         performanceData().then((data) => {
             //console.log(data);
+            data.macAddr = macAddr;
             socket.emit('performanceData', data);
         });
     }, 1000);
