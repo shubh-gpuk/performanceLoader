@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import socket from './utilities/socketConn';
+import Widget from './Widget'
 
 function App() {
 
@@ -16,9 +17,18 @@ function App() {
     });
   }, []);
 
+  let perfData_array = [performanceData];
+  //Iterate over all array elements, create a 'Widget' for every one of them.
+  //Then store the result in 'widgets' array
+  const widgets = perfData_array.map((data) => {
+    return <Widget key={data.macAddr} data={data} />;
+  });
+  console.log('widgets:');
+  console.log(widgets);
+
   return (
     <div className="App">
-      <h1>Hello Shubham</h1>
+      {widgets}
     </div>
   );
 }
