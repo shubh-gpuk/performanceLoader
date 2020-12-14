@@ -1,6 +1,7 @@
 import CPU from './Cpu';
 import Memory from './Memory';
 import Info from './Info';
+import './widget.css';
 
 function Widget(props){
 

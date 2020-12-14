@@ -1,7 +1,19 @@
+import drawCircle from './utilities/canvasLoadAnimation';
+
 function CPU(props) {
+
+    const canvas = document.querySelector('.canvas');
+    drawCircle(canvas, props.cpuData.cpuLoad_percent);
+
     return (
-        <div>
-            <h1>CPU</h1>
+        <div className='col-sm-3 cpu'>
+            <h1>CPU Load</h1>
+            <div className='canvas-wrapper'>
+                <canvas className='canvas' height='200' width='200'></canvas>
+                <div className='cpu-text'>
+                    {props.cpuData.cpuLoad_percent}%
+                </div>
+            </div>
         </div>
     );
 }
