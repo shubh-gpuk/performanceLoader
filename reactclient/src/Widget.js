@@ -14,7 +14,7 @@ function Widget(props){
     const info = {OSType, upTime, cpuType, cpuCores, cpuSpeed};
 
     return (
-        <div>
+        <div className='widget'>
             <CPU cpuData={cpu} />
             <Memory memoryData = {memory} />
             <Info infoData = {info} />
