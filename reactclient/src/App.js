@@ -8,24 +8,23 @@ function App() {
 
   const [performanceData, setPerformanceData] = useState({});
 
-  console.log(performanceData);
-
   useEffect(() => {
+    
     //On getting performance data from the server, set it in react app 
     socket.on('performanceData', (data) => {
-      setPerformanceData(data);
+      const newData = {}
+      newData[data.macAddr] = data
+      setPerformanceData(previousData => {
+        return {...previousData, ...newData};
+      });
     });
+
   }, []);
 
-  let perfData_array = [performanceData];
-  //Iterate over all array elements, create a 'Widget' for every one of them.
-  //Then store the result in 'widgets' array
-  const widgets = perfData_array.map((data) => {
-    return <Widget key={data.macAddr} data={data} />;
+  const widgets = Object.entries(performanceData).map(([key, value]) => {
+    return <Widget key={key} data={value} />;
   });
-  console.log('widgets:');
-  console.log(widgets);
-
+  
   return (
     <div className="App">
       {widgets}
