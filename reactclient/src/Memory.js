@@ -2,9 +2,9 @@
 
 function Memory(props) {
 
-    const {freeMem, totalMem, memUsage} = props.memoryData;
+    const {freeMem, totalMem, memUsage, memCanvasID} = props.memoryData;
 
-    const memCanvas = document.querySelector('.memCanvas');
+    const memCanvas = document.querySelector('.' + memCanvasID);
     drawCircle(memCanvas, memUsage*100);
 
     const factor_ByteToGB = Math.pow(2, 30);
@@ -16,7 +16,7 @@ function Memory(props) {
         <div className='col-sm-3 mem'>
             <h1>Memory Usage</h1>
             <div className='canvas-wrapper'>
-                <canvas className='memCanvas' height='200' width='200'></canvas>
+                <canvas className={memCanvasID} height='200' width='200'></canvas>
                 <div className='mem-text'>
                     {memUsage*100}%
                 </div>

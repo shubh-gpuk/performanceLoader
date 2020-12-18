@@ -45,3 +45,6 @@
     position: relative;
 }
 
+.widget .col-sm-3 {
+    display: inline-block;
+}
